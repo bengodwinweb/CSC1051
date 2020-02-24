@@ -66,7 +66,8 @@ public class UseGUI3 extends Application {
         }
 
         public Group makeBuilding() {
-            Polygon polygon = new Polygon(coord1.x(), coord1.y(),
+            Polygon polygon = new Polygon(
+                    coord1.x(), coord1.y(),
                     coord2.x(), coord2.y(),
                     coord3.x(), coord3.y(),
                     coord4.x(), coord4.y()
@@ -103,11 +104,11 @@ public class UseGUI3 extends Application {
         public Color rightColor;
         public Color topColor;
 
-        public ThreeDimensionalBuilding(Coordinate coord1, Coordinate coord2, Coordinate coord3, Coordinate coord4, Coordinate coord5, Coordinate coord6, Coordinate coord7, Color leftColor, Color rightColor, Color topColor) {
-            super(coord1, coord2, coord3, coord4, leftColor);
-            this.coord5 = coord5;
-            this.coord6 = coord6;
-            this.coord7 = coord7;
+        public ThreeDimensionalBuilding(Coordinate origin, int width, int height, int midpointOffset, int heightOffset, Color leftColor, Color rightColor, Color topColor) {
+            super(origin, width, height, leftColor);
+            coord5 = new Coordinate(origin.x() + (width / 2) + midpointOffset, origin.y());
+            coord6 = new Coordinate(origin.x() + (width / 2) + midpointOffset, origin.y() - height + heightOffset);
+            coord7 = new Coordinate(origin.x() + (width / 2) - midpointOffset, origin.y() - height - heightOffset);
             this.rightColor = rightColor;
             this.topColor = topColor;
         }
@@ -116,41 +117,29 @@ public class UseGUI3 extends Application {
         public Group makeBuilding() {
             Polygon leftSide = new Polygon(
                     super.getCoord1().x(), super.getCoord1().y(),
-                    super.getCoord2().x(), super.getCoord2().y(),
                     coord5.x(), coord5.y(),
+                    coord6.x(), coord6.y(),
                     super.getCoord4().x(), super.getCoord4().y()
             );
             leftSide.setFill(super.getColor());
 
             Polygon rightSide = new Polygon(
+                    coord5.x(), coord5.y(),
                     super.getCoord2().x(), super.getCoord2().y(),
                     super.getCoord3().x(), super.getCoord3().y(),
-                    coord6.x(), coord6.y(),
-                    coord5.x(), coord5.y()
+                    coord6.x(), coord6.y()
             );
             rightSide.setFill(rightColor);
 
             Polygon topSide = new Polygon(
                     super.getCoord4().x(), super.getCoord4().y(),
-                    coord5.x(), coord5.y(),
                     coord6.x(), coord6.y(),
+                    super.getCoord3().x(), super.getCoord3().y(),
                     coord7.x(), coord7.y()
             );
             topSide.setFill(topColor);
 
             return new Group(leftSide, rightSide, topSide);
-        }
-
-        public Coordinate getCoord5() {
-            return coord5;
-        }
-
-        public Coordinate getCoord6() {
-            return coord6;
-        }
-
-        public Coordinate getCoord7() {
-            return coord7;
         }
     }
 
@@ -175,7 +164,7 @@ public class UseGUI3 extends Application {
         Color sun3 = Color.rgb(244, 208, 98);
         Color sun4 = Color.rgb(230, 180, 67);
 
-        Coordinate sunCenter = new Coordinate(632, 510);
+        Coordinate sunCenter = new Coordinate(638, 510);
         Coordinate sunSize = new Coordinate(165, 150);
 
         Stop[] sunStops = new Stop[] { new Stop(0, Color.WHITE), new Stop(.33, sun2), new Stop(66, sun1), new Stop(1, sun3)};
@@ -192,19 +181,14 @@ public class UseGUI3 extends Application {
 
         // Building 1 - 3D
         int b1_w = 50;
-        int b1_mid = (b1_w / 2) - 3;
         int b1_h = h / 3;
-        Coordinate b1_1 = new Coordinate(0, maxY);
-        Coordinate b1_2 = new Coordinate(b1_mid, maxY);
-        Coordinate b1_3 = new Coordinate(b1_w, maxY);
-        Coordinate b1_4 = new Coordinate(0, maxY - b1_h + 5);
-        Coordinate b1_5 = new Coordinate(b1_mid, maxY - b1_h + 8);
-        Coordinate b1_6 = new Coordinate(b1_w, maxY - b1_h);
-        Coordinate b1_7 = new Coordinate(0, maxY - b1_h - 6);
+        int b1_mid_offset = -3;
+        int b1_height_offset = 6;
+        Coordinate b1_origin = new Coordinate(0, maxY);
 
-        Building building1 = new ThreeDimensionalBuilding(b1_1, b1_2, b1_3, b1_4, b1_5, b1_6, b1_7, shadeColor, sunColor, topColor);
+        Building building1 = new ThreeDimensionalBuilding(b1_origin, b1_w, b1_h, b1_mid_offset, b1_height_offset, shadeColor, sunColor, topColor);
 
-        Line building1Shade = new Line(b1_6.x() - 1, b1_6.y() + 1, b1_6.x() - 1, b1_6.y() + 80);
+        Line building1Shade = new Line(building1.getCoord3().x() - 1, building1.getCoord3().y() + 1, building1.getCoord3().x() - 1, building1.getCoord3().y() + 80);
         building1Shade.setStrokeWidth(2);
         building1Shade.setStroke(topColor);
 
@@ -214,7 +198,7 @@ public class UseGUI3 extends Application {
         // Building 2 - Flat Shade
         int b2_w = 18;
         int b2_h = (b1_h / 2) + 15;
-        Coordinate b2_origin = new Coordinate(b1_3.x(), maxY);
+        Coordinate b2_origin = new Coordinate(b1_origin.x() + b1_w, maxY);
 
         Building building2 = new Building(b2_origin, b2_w, b2_h, shadeColor);
         Group building2Group = building2.makeBuilding();
@@ -239,17 +223,12 @@ public class UseGUI3 extends Application {
 
         // Building 5 - 3D
         int b5_w = 66;
-        int b5_mid = (b5_w / 2) - 4;
         int b5_h = b1_h - 10;
+        int b5_mid_offset = -4;
+        int b5_height_offset = 2;
         Coordinate b5_origin = new Coordinate(b4_origin.x() + b4_w, maxY);
-        Coordinate b5_2 = new Coordinate(b5_origin.x() + b5_mid, maxY);
-        Coordinate b5_3 = new Coordinate(b5_origin.x() + b5_w, maxY);
-        Coordinate b5_4 = new Coordinate(b5_origin.x(), maxY - b5_h);
-        Coordinate b5_5 = new Coordinate(b5_2.x(), b5_4.y() + 3);
-        Coordinate b5_6 = new Coordinate(b5_3.x(), b5_4.y());
-        Coordinate b5_7 = new Coordinate(b5_2.x() + 8, b5_4.y() - 2);
 
-        Building building5 = new ThreeDimensionalBuilding(b5_origin, b5_2, b5_3, b5_4, b5_5, b5_6, b5_7, shadeColor, sunColor, topColor);
+        Building building5 = new ThreeDimensionalBuilding(b5_origin, b5_w, b5_h, b5_mid_offset, b5_height_offset, shadeColor, sunColor, topColor);
         Group building5Group = building5.makeBuilding();
 
         // Building 6 - Flat Shade
@@ -262,39 +241,29 @@ public class UseGUI3 extends Application {
 
         // Building 7 - 3D
         int b7_w = 66;
-        int b7_mid = 25;
         int b7_h = (b5_h - b6_h) / 2 + b6_h;
+        int b7_mid_offset = -8;
+        int b7_height_offset = 5;
         Coordinate b7_origin = new Coordinate(b6_origin.x() + b6_w - 3, maxY);
-        Coordinate b7_2 = new Coordinate(b7_origin.x() + b7_mid, maxY);
-        Coordinate b7_3 = new Coordinate(b7_origin.x() + b7_w, maxY);
-        Coordinate b7_4 = new Coordinate(b7_origin.x(), maxY - b7_h);
-        Coordinate b7_5 = new Coordinate(b7_2.x(), b7_4.y() + 7);
-        Coordinate b7_6 = new Coordinate(b7_3.x(), b7_4.y());
-        Coordinate b7_7 = new Coordinate(b7_5.x() + 11, b7_4.y() - 3);
 
-        Building building7 = new ThreeDimensionalBuilding(b7_origin, b7_2, b7_3, b7_4, b7_5, b7_6, b7_7, sunColor, shadeColor, topColor);
+        Building building7 = new ThreeDimensionalBuilding(b7_origin, b7_w, b7_h, b7_mid_offset, b7_height_offset, sunColor, shadeColor, topColor);
         Group building7Group = building7.makeBuilding();
 
         // Building 8 - Flat Sun
-        int b8_w = 110;
-        int b8_h = b1_h + 40;
-        Coordinate b8_bottom_origin = new Coordinate(b7_3.x(), maxY);
+        int b8_b_w = 110;
+        int b8_b_h = b1_h + 40;
+        Coordinate b8_bottom_origin = new Coordinate(b7_origin.x() + b7_w + 3, maxY);
 
-        Building building8Bottom = new Building(b8_bottom_origin, b8_w, b8_h, sunColor);
+        Building building8Bottom = new Building(b8_bottom_origin, b8_b_w, b8_b_h, sunColor);
         Group building8BottomGroup = building8Bottom.makeBuilding();
 
         int b8_m_w = 80;
-        int b8_m_mid = 65;
         int b8_m_h = 35;
-        Coordinate b8_middle_origin = new Coordinate(b8_bottom_origin.x() + 15, maxY - b8_h);
-        Coordinate b8_m_2 = new Coordinate(b8_middle_origin.x() + b8_m_mid, b8_middle_origin.y());
-        Coordinate b8_m_3 = new Coordinate(b8_middle_origin.x() + b8_m_w, b8_middle_origin.y());
-        Coordinate b8_m_4 = new Coordinate(b8_middle_origin.x(), b8_middle_origin.y() - b8_m_h);
-        Coordinate b8_m_5 = new Coordinate(b8_m_2.x(), b8_m_4.y());
-        Coordinate b8_m_6 = new Coordinate(b8_m_3.x(), b8_m_4.y());
-        Coordinate b8_m_7 = b8_m_5;
+        int b8_m_mid_offset = 25;
+        int b8_m_height_offset = 0;
+        Coordinate b8_middle_origin = new Coordinate(b8_bottom_origin.x() + 15, maxY - b8_b_h);
 
-        Building building8Middle = new ThreeDimensionalBuilding(b8_middle_origin, b8_m_2, b8_m_3, b8_m_4, b8_m_5, b8_m_6, b8_m_7, shadeColor, sunColor, shadeColor);
+        Building building8Middle = new ThreeDimensionalBuilding(b8_middle_origin, b8_m_w, b8_m_h, b8_m_mid_offset, b8_m_height_offset, shadeColor, sunColor, shadeColor);
         Group building8MiddleGroup = building8Middle.makeBuilding();
 
         int b8_t_w = 40;
