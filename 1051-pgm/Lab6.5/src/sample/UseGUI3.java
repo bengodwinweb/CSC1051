@@ -8,10 +8,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.Group;
 import javafx.scene.paint.*;
-import javafx.scene.shape.Ellipse;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.Polygon;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.*;
 import javafx.stage.Stage;
 
 public class UseGUI3 extends Application {
@@ -52,25 +49,26 @@ public class UseGUI3 extends Application {
         //
         // -- SUN --
         //
-        Color sun1 = Color.rgb(246, 230, 87);
-        Color sun2 = Color.rgb(242, 236, 182);
-        Color sun3 = Color.rgb(244, 208, 98);
-        Color sun4 = Color.rgb(230, 180, 67);
+        Color sun1 = Color.rgb(242, 236, 200, .8);
+        Color sun2 = Color.rgb(249, 238, 108, .8);
+        Color sun3 = Color.rgb(249, 234, 39, .8);
+        Color sun4 = Color.rgb(252, 208, 12, .8);
 
         Coordinate sunCenter = new Coordinate(652, 545);
         Coordinate sunSize = new Coordinate(170, 152);
 
         Stop[] sunStops = new Stop[] {
-                new Stop(0, Color.WHITE),
-                new Stop(.33, sun2),
-                new Stop(66, sun1),
-                new Stop(1, sun3)
+                new Stop(0, sun1),
+                new Stop(.25, sun2),
+                new Stop(.55, sun3),
+//                new Stop(.8, sun3),
+                new Stop(.97, sun4)
         };
         RadialGradient sunGradient = new RadialGradient(
                 0,
                 .1,
                 sunCenter.x(),
-                sunCenter.y(),
+                sunCenter.y() + 6,
                 sunSize.x(),
                 false,
                 CycleMethod.NO_CYCLE,
@@ -84,7 +82,11 @@ public class UseGUI3 extends Application {
                 sunSize.y()
         );
         sun.setFill(sunGradient);
-        sun.setStroke(sun4);
+        sun.setStrokeWidth(20);
+        sun.setStrokeType(StrokeType.OUTSIDE);
+        System.out.println(sun.getStrokeWidth());
+        Color sunStroke = Color.rgb(238, 140, 55, .70);
+        sun.setStroke(sunStroke);
         sun.setStrokeWidth(2);
 
         //
@@ -337,9 +339,9 @@ public class UseGUI3 extends Application {
         ThreeDimensionalBuilding building9 = new ThreeDimensionalBuilding(
                 b9_origin,
                 115,
-                building8Bottom.getHeight() + 27,
+                building8Bottom.getHeight() + 17,
                 24,
-                10,
+                6,
                 shadeColor,
                 topColor,
                 topColor
@@ -651,25 +653,20 @@ public class UseGUI3 extends Application {
         building16LeftShade.setStroke(shadeColor);
 
         Line building16TopRightShade = new Line(
-                building16.getOrigin().x() + building16.getWidth() / 2.0 + 0,
-                maxY - building16.getHeight() - 88,
+                building16.getOrigin().x() + building16.getWidth() / 2.0 + 1,
+                maxY - building16.getHeight() - 88.8,
                 building16.getOrigin().x() + building16.getWidth() / 2.0 + 5,
-                maxY - building16.getHeight() - 70
+                maxY - building16.getHeight() - 71
         );
         building16TopRightShade.setStrokeWidth(2);
         building16TopRightShade.setStroke(topColor);
 
         Line building16BottomRightShade = new Line(
-                building16.getOrigin().x() + building16.getWidth() / 2.0 + 5,
+                building16.getOrigin().x() + building16.getWidth() / 2.0 + 5.5,
                 maxY - building16.getHeight() - 70,
-                137,
-                572
+                138,
+                583
         );
-
-        System.out.println("X = " + (building16.getC3().x() - 1));
-        System.out.println("Y = " + (building16.getC3().y() - 1));
-        System.out.println("\nX = " + (building16.getC3().x() - 1));
-        System.out.println("Y = " + (building16.getC3().y() - 1));
 
         building16BottomRightShade.setStrokeWidth(2);
         building16BottomRightShade.setStroke(topColor);
@@ -681,7 +678,6 @@ public class UseGUI3 extends Application {
                 building16BottomRightShade
         );
 
-
         // Buildings Group
         Group buildings = new Group(
                 building16Group, building1Group, building2Group,
@@ -692,8 +688,18 @@ public class UseGUI3 extends Application {
                 building13Group
         );
 
+        Path arc = new Path(
+                new MoveTo(300, maxY),
+                new CubicCurveTo(410, 297, 1040, 545, 910, maxY)
+        );
+        arc.setStrokeWidth(2);
+        arc.setStroke(Color.rgb(249, 68, 15, .25));
+        arc.setFill(Color.rgb(249, 68, 15, .14));
+
+        Group arcGroup = new Group(arc);
+
         // Set root node and scene
-        Group root = new Group(sun, buildings);
+        Group root = new Group(sun, arcGroup, buildings);
         Scene scene = new Scene(root, h, w, skyGradient);
 
         // Primary stage setup
