@@ -11,137 +11,17 @@ import javafx.scene.paint.*;
 import javafx.scene.shape.Ellipse;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 public class UseGUI3 extends Application {
-    public int h = 1000;
-    public int w = 1000;
-    int maxX = 1000;
-    int maxY = 1000;
-    public Color shadeColor = Color.rgb(48, 51, 68);
-    public Color sunColor = Color.rgb(91, 110, 129);
-    public Color topColor = Color.WHITE;
-
-    public class Coordinate {
-        private int x;
-        private int y;
-
-        public Coordinate(int x, int y) {
-            this.x = (int) (((double) x / 1000) * h);
-            this.y = (int) (((double) y / 1000) * w);
-        }
-
-        public int x() {
-            return x;
-        }
-
-        public int y() {
-            return y;
-        }
-    }
-
-    public class Building {
-        private Coordinate coord1;
-        private Coordinate coord2;
-        private Coordinate coord3;
-        private Coordinate coord4;
-        private Color color;
-
-        public Building(Coordinate origin, int width, int height, Color color) {
-            this(
-                    origin,
-                    new Coordinate(origin.x() + width, origin.y()),
-                    new Coordinate(origin.x() + width, origin.y() - height),
-                    new Coordinate(origin.x(), origin.y() - height),
-                    color
-            );
-        }
-
-        private Building(Coordinate coord1, Coordinate coord2, Coordinate coord3, Coordinate coord4, Color color) {
-            this.coord1 = coord1;
-            this.coord2 = coord2;
-            this.coord3 = coord3;
-            this.coord4 = coord4;
-            this.color = color;
-        }
-
-        public Group makeBuilding() {
-            Polygon polygon = new Polygon(
-                    coord1.x(), coord1.y(),
-                    coord2.x(), coord2.y(),
-                    coord3.x(), coord3.y(),
-                    coord4.x(), coord4.y()
-            );
-            polygon.setFill(color);
-            return new Group(polygon);
-        }
-
-        public Coordinate getCoord1() {
-            return coord1;
-        }
-
-        public Coordinate getCoord2() {
-            return coord2;
-        }
-
-        public Coordinate getCoord3() {
-            return coord3;
-        }
-
-        public Coordinate getCoord4() {
-            return coord4;
-        }
-
-        public Color getColor() {
-            return color;
-        }
-    }
-
-    public class ThreeDimensionalBuilding extends Building {
-        public Coordinate coord5;
-        public Coordinate coord6;
-        public Coordinate coord7;
-        public Color rightColor;
-        public Color topColor;
-
-        public ThreeDimensionalBuilding(Coordinate origin, int width, int height, int midpointOffset, int heightOffset, Color leftColor, Color rightColor, Color topColor) {
-            super(origin, width, height, leftColor);
-            coord5 = new Coordinate(origin.x() + (width / 2) + midpointOffset, origin.y());
-            coord6 = new Coordinate(origin.x() + (width / 2) + midpointOffset, origin.y() - height + heightOffset);
-            coord7 = new Coordinate(origin.x() + (width / 2) - midpointOffset, origin.y() - height - heightOffset);
-            this.rightColor = rightColor;
-            this.topColor = topColor;
-        }
-
-        @Override
-        public Group makeBuilding() {
-            Polygon leftSide = new Polygon(
-                    super.getCoord1().x(), super.getCoord1().y(),
-                    coord5.x(), coord5.y(),
-                    coord6.x(), coord6.y(),
-                    super.getCoord4().x(), super.getCoord4().y()
-            );
-            leftSide.setFill(super.getColor());
-
-            Polygon rightSide = new Polygon(
-                    coord5.x(), coord5.y(),
-                    super.getCoord2().x(), super.getCoord2().y(),
-                    super.getCoord3().x(), super.getCoord3().y(),
-                    coord6.x(), coord6.y()
-            );
-            rightSide.setFill(rightColor);
-
-            Polygon topSide = new Polygon(
-                    super.getCoord4().x(), super.getCoord4().y(),
-                    coord6.x(), coord6.y(),
-                    super.getCoord3().x(), super.getCoord3().y(),
-                    coord7.x(), coord7.y()
-            );
-            topSide.setFill(topColor);
-
-            return new Group(leftSide, rightSide, topSide);
-        }
-    }
+    public static final int h = 1000;
+    public static final int w = 1000;
+    public static final int maxX = 1000;
+    public static final int maxY = 1000;
+    public static final Color shadeColor = Color.rgb(48, 51, 68);
+    public static final Color sunColor = Color.rgb(91, 110, 129);
+    public static final Color topColor = Color.WHITE;
 
     public void start(Stage primaryStage) {
         //
@@ -153,8 +33,21 @@ public class UseGUI3 extends Application {
         Color sky4 = Color.rgb(238, 140, 55);
         Color sky5 = Color.rgb(234, 106, 50);
 
-        Stop[] skyStops = new Stop[] { new Stop(0, sky1), new Stop(.2, sky2), new Stop(.4, sky3), new Stop(.6, sky4), new Stop(.8, sky5)};
-        LinearGradient skyGradient = new LinearGradient(0, 0, 0, 1, true, CycleMethod.NO_CYCLE, skyStops);
+        Stop[] skyStops = new Stop[] {
+                new Stop(0, sky1),
+                new Stop(.2, sky2),
+                new Stop(.4, sky3),
+                new Stop(.6, sky4),
+                new Stop(.8, sky5)};
+        LinearGradient skyGradient = new LinearGradient(
+                0,
+                0,
+                0,
+                1,
+                true,
+                CycleMethod.NO_CYCLE,
+                skyStops
+        );
 
         //
         // -- SUN --
@@ -164,13 +57,32 @@ public class UseGUI3 extends Application {
         Color sun3 = Color.rgb(244, 208, 98);
         Color sun4 = Color.rgb(230, 180, 67);
 
-        Coordinate sunCenter = new Coordinate(638, 510);
-        Coordinate sunSize = new Coordinate(165, 150);
+        Coordinate sunCenter = new Coordinate(652, 545);
+        Coordinate sunSize = new Coordinate(170, 152);
 
-        Stop[] sunStops = new Stop[] { new Stop(0, Color.WHITE), new Stop(.33, sun2), new Stop(66, sun1), new Stop(1, sun3)};
-        RadialGradient sunGradient = new RadialGradient(0, .1, sunCenter.x(), sunCenter.y(), sunSize.x(), false, CycleMethod.NO_CYCLE, sunStops);
+        Stop[] sunStops = new Stop[] {
+                new Stop(0, Color.WHITE),
+                new Stop(.33, sun2),
+                new Stop(66, sun1),
+                new Stop(1, sun3)
+        };
+        RadialGradient sunGradient = new RadialGradient(
+                0,
+                .1,
+                sunCenter.x(),
+                sunCenter.y(),
+                sunSize.x(),
+                false,
+                CycleMethod.NO_CYCLE,
+                sunStops
+        );
 
-        Ellipse sun = new Ellipse(sunCenter.x(), sunCenter.y(), sunSize.x(), sunSize.y());
+        Ellipse sun = new Ellipse(
+                sunCenter.x(),
+                sunCenter.y(),
+                sunSize.x(),
+                sunSize.y()
+        );
         sun.setFill(sunGradient);
         sun.setStroke(sun4);
         sun.setStrokeWidth(2);
@@ -180,15 +92,24 @@ public class UseGUI3 extends Application {
         //
 
         // Building 1 - 3D
-        int b1_w = 50;
-        int b1_h = h / 3;
-        int b1_mid_offset = -3;
-        int b1_height_offset = 6;
-        Coordinate b1_origin = new Coordinate(0, maxY);
+        Coordinate b1_origin = new Coordinate(-25, maxY);
+        Building building1 = new ThreeDimensionalBuilding(
+                b1_origin,
+                75,
+                maxY / 3,
+                10,
+                5,
+                shadeColor,
+                sunColor,
+                topColor
+        );
 
-        Building building1 = new ThreeDimensionalBuilding(b1_origin, b1_w, b1_h, b1_mid_offset, b1_height_offset, shadeColor, sunColor, topColor);
-
-        Line building1Shade = new Line(building1.getCoord3().x() - 1, building1.getCoord3().y() + 1, building1.getCoord3().x() - 1, building1.getCoord3().y() + 80);
+        Line building1Shade = new Line(
+                building1.getC3().x() - 1,
+                building1.getC3().y() + 1,
+                building1.getC3().x() - 1,
+                building1.getC3().y() + 80
+        );
         building1Shade.setStrokeWidth(2);
         building1Shade.setStroke(topColor);
 
@@ -196,98 +117,548 @@ public class UseGUI3 extends Application {
         building1Group.getChildren().add(building1Shade);
 
         // Building 2 - Flat Shade
-        int b2_w = 18;
-        int b2_h = (b1_h / 2) + 15;
-        Coordinate b2_origin = new Coordinate(b1_origin.x() + b1_w, maxY);
-
-        Building building2 = new Building(b2_origin, b2_w, b2_h, shadeColor);
+        Coordinate b2_origin = new Coordinate(
+                building1.getOrigin().x() + building1.getWidth(),
+                maxY
+        );
+        Building building2 = new Building(
+                b2_origin,
+                18,
+                (building1.getHeight() / 2) + 15,
+                shadeColor
+        );
         Group building2Group = building2.makeBuilding();
 
-
         // Building 3 - Flat Shade
-        int b3_w = 66;
-        int b3_h = b2_h + 40;
-        Coordinate b3_origin = new Coordinate(b2_origin.x() + b2_w, maxY);
-
-        Building building3 = new Building(b3_origin, b3_w, b3_h, shadeColor);
+        Coordinate b3_origin = new Coordinate(
+                building2.getOrigin().x() + building2.getWidth(),
+                maxY
+        );
+        Building building3 = new Building(
+                b3_origin,
+                66,
+                building2.getHeight() + 40,
+                shadeColor
+        );
         Group building3Group = building3.makeBuilding();
 
         // Building 4 - Flat Shade
-        int b4_w = 67;
-        int b4_h = b2_h - 45;
-        Coordinate b4_origin = new Coordinate(b3_origin.x() + b3_w, maxY);
-
-        Building building4 = new Building(b4_origin, b4_w, b4_h, shadeColor);
+        Coordinate b4_origin = new Coordinate(
+                building3.getOrigin().x() + building3.getWidth(),
+                maxY
+        );
+        Building building4 = new Building(
+                b4_origin,
+                67,
+                building2.getHeight() - 45,
+                shadeColor
+        );
         Group building4Group = building4.makeBuilding();
 
-
         // Building 5 - 3D
-        int b5_w = 66;
-        int b5_h = b1_h - 10;
-        int b5_mid_offset = -4;
-        int b5_height_offset = 2;
-        Coordinate b5_origin = new Coordinate(b4_origin.x() + b4_w, maxY);
-
-        Building building5 = new ThreeDimensionalBuilding(b5_origin, b5_w, b5_h, b5_mid_offset, b5_height_offset, shadeColor, sunColor, topColor);
+        Coordinate b5_origin = new Coordinate(
+                building4.getOrigin().x() + building4.getWidth(),
+                maxY
+        );
+        Building building5 = new ThreeDimensionalBuilding(
+                b5_origin,
+                66,
+                building1.getHeight() - 10,
+                -4,
+                2,
+                shadeColor,
+                sunColor,
+                topColor
+        );
         Group building5Group = building5.makeBuilding();
 
         // Building 6 - Flat Shade
-        int b6_w = 79;
-        int b6_h = b3_h + 18;
-        Coordinate b6_origin = new Coordinate(b5_origin.x() + b5_w - 11, maxY);
-
-        Building building6 = new Building(b6_origin, b6_w, b6_h, shadeColor);
+        Coordinate b6_origin = new Coordinate(
+                building5.getOrigin().x() + building5.getWidth() - 11,
+                maxY
+        );
+        Building building6 = new Building(
+                b6_origin,
+                79,
+                building3.getHeight() + 18,
+                shadeColor
+        );
         Group building6Group = building6.makeBuilding();
 
-        // Building 7 - 3D
-        int b7_w = 66;
-        int b7_h = (b5_h - b6_h) / 2 + b6_h;
-        int b7_mid_offset = -8;
-        int b7_height_offset = 5;
-        Coordinate b7_origin = new Coordinate(b6_origin.x() + b6_w - 3, maxY);
+        Line building6Shade = new Line(
+                building5.getC3().x(),
+                building6.getC4().y() - 1,
+                building5.getC3().x() + 45,
+                building6.getC4().y() - 1
+        );
+        building6Shade.setStrokeWidth(2);
+        building6Shade.setStroke(topColor);
+        building6Group.getChildren().add(building6Shade);
 
-        Building building7 = new ThreeDimensionalBuilding(b7_origin, b7_w, b7_h, b7_mid_offset, b7_height_offset, sunColor, shadeColor, topColor);
+        // Building 7 - 3D
+        Coordinate b7_origin = new Coordinate(
+                building6.getOrigin().x() + building6.getWidth() - 3,
+                maxY
+        );
+        Building building7 = new ThreeDimensionalBuilding(
+                b7_origin,
+                66,
+                (building5.getHeight() - building6.getHeight()) / 2 + building6.getHeight(),
+                -8,
+                5,
+                sunColor,
+                shadeColor,
+                topColor
+        );
         Group building7Group = building7.makeBuilding();
 
         // Building 8 - Flat Sun
-        int b8_b_w = 110;
-        int b8_b_h = b1_h + 40;
-        Coordinate b8_bottom_origin = new Coordinate(b7_origin.x() + b7_w + 3, maxY);
-
-        Building building8Bottom = new Building(b8_bottom_origin, b8_b_w, b8_b_h, sunColor);
+        Coordinate b8_bottom_origin = new Coordinate(
+                building7.getOrigin().x() + building7.getWidth() + 3,
+                maxY
+        );
+        Building building8Bottom = new Building(
+                b8_bottom_origin,
+                110,
+                building1.getHeight() + 40,
+                sunColor
+        );
         Group building8BottomGroup = building8Bottom.makeBuilding();
 
-        int b8_m_w = 80;
-        int b8_m_h = 35;
-        int b8_m_mid_offset = 25;
-        int b8_m_height_offset = 0;
-        Coordinate b8_middle_origin = new Coordinate(b8_bottom_origin.x() + 15, maxY - b8_b_h);
+        Stop[] shadeStops = new Stop[] {
+                new Stop(0, shadeColor),
+                new Stop(.65, shadeColor),
+                new Stop(1, sunColor)
+        };
+        LinearGradient shadeGradient = new LinearGradient(
+                0,
+                0,
+                1,
+                0,
+                true,
+                CycleMethod.NO_CYCLE,
+                shadeStops
+        );
 
-        Building building8Middle = new ThreeDimensionalBuilding(b8_middle_origin, b8_m_w, b8_m_h, b8_m_mid_offset, b8_m_height_offset, shadeColor, sunColor, shadeColor);
-        Group building8MiddleGroup = building8Middle.makeBuilding();
+        Stop[] spireStops = new Stop[] {
+                new Stop(0, shadeColor),
+                new Stop(.5, sunColor),
+                new Stop(1, shadeColor)
+        };
+        LinearGradient spireGradient = new LinearGradient(
+                0,
+                0,
+                0,
+                1,
+                true,
+                CycleMethod.NO_CYCLE,
+                spireStops
+        );
 
-        int b8_t_w = 40;
-        int b8_t_h = 28;
-        Coordinate b8_top_origin = new Coordinate(b8_middle_origin.x() + 20, b8_middle_origin.y() - b8_m_h);
+        Coordinate b8_middle_origin = new Coordinate(
+                building8Bottom.getOrigin().x() + 15,
+                maxY - building8Bottom.getHeight()
+        );
+        Rectangle building8Middle = new Rectangle(
+                b8_middle_origin.x(),
+                b8_middle_origin.y() - 35,
+                80,
+                35
+        );
+        building8Middle.setFill(shadeGradient);
+        Group building8MiddleGroup = new Group(building8Middle);
 
-        Building building8Top = new Building(b8_top_origin, b8_t_w, b8_t_h, shadeColor);
+        Coordinate b8_top_origin = new Coordinate(
+                b8_middle_origin.x() + 20,
+                b8_middle_origin.y() - 35
+        );
+        Building building8Top = new Building(
+                b8_top_origin,
+                40,
+                28,
+                shadeColor
+        );
         Group building8TopGroup = building8Top.makeBuilding();
 
-        Line building8Pole = new Line(b8_top_origin.x() + 20, b8_top_origin.y() - b8_t_h, b8_top_origin.x() + 20, b8_top_origin.y() - b8_t_h - 90);
+        Line building8Pole = new Line(
+                building8Top.getOrigin().x() + 20,
+                building8Top.getOrigin().y() - building8Top.getHeight(),
+                building8Top.getOrigin().x() + 20,
+                building8Top.getOrigin().y() - building8Top.getHeight() - 90
+        );
         building8Pole.setStrokeWidth(4);
-        building8Pole.setStroke(shadeColor);
+        building8Pole.setStroke(spireGradient);
 
-        Group building8Group = new Group(building8BottomGroup, building8MiddleGroup, building8TopGroup, building8Pole);
+        Line building8MiddleShade = new Line(
+                b8_middle_origin.x() + 80,
+                b8_middle_origin.y() - 34,
+                b8_middle_origin.x() + 80,
+                b8_middle_origin.y() - 1
+        );
+        building8MiddleShade.setStrokeWidth(2);
+        building8MiddleShade.setStroke(topColor);
 
-        Group buildings = new Group(building1Group, building2Group, building3Group,
-                building4Group, building5Group, building7Group, building6Group, building8Group);
+        Line building8TopShade = new Line(
+                building8Top.getC2().x(),
+                building8Top.getC2().y() - 1,
+                building8Top.getC3().x(),
+                building8Top.getC3().y() + 1
+        );
+        building8TopShade.setStrokeWidth(2);
+        building8TopShade.setStroke(topColor);
 
+        Line building8RightShade = new Line(
+                building8Bottom.getC3().x() - 1,
+                building8Bottom.getC3().y() + 1,
+                building8Bottom.getC3().x() - 1,
+                building8Bottom.getC3().y() + 45.
+        );
+        building8RightShade.setStrokeWidth(2);
+        building8RightShade.setStroke(topColor);
+
+        Line building8LeftShade = new Line(
+                building8Bottom.getOrigin().x() + 1,
+                building8Bottom.getOrigin().y(),
+                building8Bottom.getC4().x() + 1,
+                building8Bottom.getC4().y() + 1
+        );
+        building8LeftShade.setStrokeWidth(2);
+        building8LeftShade.setStroke(shadeColor);
+
+        Group building8Group = new Group(
+                building8BottomGroup, building8MiddleGroup,
+                building8TopGroup, building8Pole,
+                building8MiddleShade, building8TopShade,
+                building8RightShade, building8LeftShade
+        );
+
+        // Building 9 - 3D, right side white
+        Coordinate b9_origin = new Coordinate(485, maxY);
+        Building building9 = new ThreeDimensionalBuilding(
+                b9_origin,
+                115,
+                building8Bottom.getHeight() + 27,
+                24,
+                10,
+                shadeColor,
+                topColor,
+                topColor
+        );
+        Group building9Group = building9.makeBuilding();
+
+        // Building 10 - 3D
+        Coordinate b10_origin = new Coordinate(566, maxY);
+        Building building10 = new ThreeDimensionalBuilding(
+                b10_origin,
+                140,
+                building6.getHeight() + 15,
+                7,
+                3,
+                sunColor,
+                shadeColor,
+                topColor
+        );
+        Group building10Group = building10.makeBuilding();
+
+        Line building10Shade1 = new Line(
+                building10.getC3().x() - 3,
+                building10.getC3().y() + 1.8,
+                building10.getC3().x() - 1,
+                maxY - building4.getHeight() + 20
+        );
+        building10Shade1.setStrokeWidth(2);
+        building10Shade1.setStroke(sunColor);
+
+        Line building10Shade2 = new Line(
+                building10.getC3().x() - 1,
+                building10.getC3().y() + 1,
+                building10.getC3().x() - 1,
+                maxY - building4.getHeight() + 20
+        );
+        building10Shade2.setStrokeWidth(2);
+        building10Shade2.setStroke(topColor);
+        building10Group.getChildren().addAll(building10Shade2, building10Shade1);
+
+        // Building 11 - Flat
+        Coordinate b11_origin = new Coordinate(
+                building10.getOrigin().x() + building10.getWidth(),
+                maxY
+        );
+        Building building11 = new Building(
+                b11_origin,
+                100,
+                building4.getHeight() + 40,
+                shadeColor
+        );
+        Group building11Group = building11.makeBuilding();
+
+        // Building 12 - Flat
+        Coordinate b12_origin = new Coordinate(
+                building11.getOrigin().x() + building11.getWidth(),
+                maxY
+        );
+        Building building12 = new Building(
+                b12_origin,
+                75,
+                building7.getHeight() + 20,
+                shadeColor
+        );
+        Group building12Group = building12.makeBuilding();
+
+        Line building12LeftShade1 = new Line(
+                building12.getC4().x() + 1,
+                building12.getC4().y() + 1,
+                building12.getOrigin().x() + 1,
+                building12.getOrigin().y()
+        );
+        building12LeftShade1.setStrokeWidth(2);
+        building12LeftShade1.setStroke(topColor);
+
+        Line building12LeftShade2 = new Line(
+                building12.getC4().x() + 3.2,
+                building12.getC4().y() + 1,
+                building12.getOrigin().x() + 1,
+                building12.getOrigin().y()
+        );
+        building12LeftShade2.setStrokeWidth(3);
+        building12LeftShade2.setStroke(sunColor);
+
+        Line building12TopShade = new Line(
+                building12.getC4().x() + 3.2,
+                building12.getC4().y() + 1,
+                building12.getOrigin().x() + 30,
+                building12.getC4().y() + 1
+        );
+        building12TopShade.setStrokeWidth(3);
+        building12TopShade.setStroke(sunColor);
+
+        building12Group.getChildren().addAll(
+                building12LeftShade1, building12LeftShade2, building12TopShade
+        );
+
+        // Building 13 - Flat
+        Coordinate b13_origin = new Coordinate(875, maxY);
+        Polygon building13 = new Polygon(
+                b13_origin.x(), b13_origin.y(),
+                b13_origin.x() + 65, b13_origin.y(),
+                b13_origin.x() + 65, b13_origin.y() - building8Bottom.getHeight() + 8,
+                b13_origin.x(), b13_origin.y() - building8Bottom.getHeight()
+        );
+        building13.setFill(sunColor);
+        Group building13Group = new Group(building13);
+
+        // Building 14 - 3D
+        Coordinate b14_origin = new Coordinate(875, maxY);
+        ThreeDimensionalBuilding building14 = new ThreeDimensionalBuilding(
+                b14_origin, 100,
+                building8Bottom.getHeight() + 50,
+                15,
+                8,
+                shadeColor,
+                shadeColor,
+                topColor
+        );
+        Group building14Group = building14.makeBuilding();
+
+        Line building14Shade1 = new Line(
+                building14.getC4().x() + 1,
+                building14.getC4().y(),
+                building14.getC7().x() + 1,
+                building14.getC7().y()
+        );
+        building14Shade1.setStrokeWidth(2);
+        building14Shade1.setStroke(shadeColor);
+
+        Line building14Shade2 = new Line(
+                building14.getC7().x() + 1,
+                building14.getC7().y(),
+                building14.getC3().x() + 1,
+                building14.getC3().y()
+        );
+        building14Shade2.setStrokeWidth(2);
+        building14Shade2.setStroke(shadeColor);
+
+        Line building14Shade3 = new Line(
+                building14.getC4().x() + 1,
+                building14.getC4().y() + 3,
+                building14.getC4().x() + 1,
+                building14.getC4().y() + 43
+        );
+        building14Shade3.setStrokeWidth(2);
+        building14Shade3.setStroke(topColor);
+
+        Line building14Shade4 = new Line(
+                building14.getC3().x() + 3,
+                building14.getC3().y() + 5,
+                building14.getC2().x() + 3,
+                building14.getC2().y()
+        );
+        building14Shade4.setStrokeWidth(2);
+        building14Shade4.setStroke(sky3);
+
+        building14Group.getChildren().addAll(
+                building14Shade1,
+                building14Shade2,
+                building14Shade3,
+                building14Shade4
+        );
+
+        // Building 15 - Flat
+        Coordinate b15_origin = new Coordinate(925, maxY);
+        Building building15 = new Building(
+                b15_origin,
+                maxX - b15_origin.x(),
+                building8Bottom.getHeight() + 180,
+                shadeColor
+        );
+        Group building15Group = building15.makeBuilding();
+
+        Polygon building15LightShade = new Polygon(
+                building15.getC4().x(),
+                building15.getC4().y(),
+                building15.getC4().x(),
+                building15.getC4().y() + 108,
+                building15.getC4().x() + 4,
+                building15.getC4().y() + 102,
+                building15.getC4().x() + 4,
+                building15.getC4().y()
+        );
+        building15LightShade.setFill(topColor);
+
+        Polygon building15DarkShade = new Polygon(
+                building15.getC4().x() + 4,
+                building15.getC4().y(),
+                building15.getC4().x() + 4,
+                building15.getC4().y() + 102,
+                building15.getC4().x() + 8,
+                building15.getC4().y() + 96,
+                building15.getC4().x() + 8,
+                building15.getC4().y()
+        );
+        building15DarkShade.setFill(sunColor);
+
+        building15Group.getChildren().addAll(
+                building15LightShade, building15DarkShade
+        );
+
+        // Building 16 - Flat with two triangle top
+        Coordinate b16_origin = new Coordinate(
+                building3.getOrigin().x() + 15,
+                maxY
+        );
+        Building building16 = new Building(
+                b16_origin, building3.getWidth() + 5,
+                building9.getHeight() + 5,
+                sunColor
+        );
+        Group building16Group = building16.makeBuilding();
+
+        int triangle1Height = 76;
+        int triangle2Height = 83;
+        int triangle3Height = 95;
+
+        Polygon building16Triangle1 = new Polygon(
+                building16.getC4().x(),
+                building16.getC4().y(),
+                building16.getC3().x(),
+                building16.getC3().y(),
+                building16.getC4().x() + building16.getWidth() / 2.0,
+                maxY - building16.getHeight() - triangle1Height
+        );
+        building16Triangle1.setFill(sunColor);
+
+        Polygon building16Triangle2 = new Polygon(
+                building16.getC4().x() + building16.getWidth() / 16.0,
+                maxY - building16.getHeight(),
+                building16.getC3().x() - building16.getWidth() / 16.0,
+                maxY - building16.getHeight(),
+                building16.getC4().x() + building16.getWidth() / 2.0,
+                maxY - building16.getHeight() - triangle2Height
+        );
+        building16Triangle2.setFill(sunColor);
+
+        Polygon building16Triangle3 = new Polygon(
+                building16.getC4().x() + building16.getWidth() / 4.0,
+                maxY - building16.getHeight(),
+                building16.getC3().x() - building16.getWidth() / 4.0,
+                maxY - building16.getHeight(),
+                building16.getC4().x() + building16.getWidth() / 2.0,
+                maxY - building16.getHeight() - triangle3Height
+        );
+        building16Triangle3.setFill(sunColor);
+
+        Line building16Spire = new Line(
+                building16.getOrigin().x() + building16.getWidth() / 2.0,
+                maxY - building16.getHeight() - 89,
+                building16.getOrigin().x() + building16.getWidth() / 2.0,
+                maxY - building16.getHeight() - 50 - 60
+        );
+        building16Spire.setStrokeWidth(2);
+        building16Spire.setStroke(spireGradient);
+
+        Line building16LeftShade = new Line(
+                building16.getOrigin().x() + 1, building16.getOrigin().y(),
+                building16.getC4().x() + 1, building16.getC4().y()
+        );
+        building16LeftShade.setStrokeWidth(3);
+        building16LeftShade.setStroke(shadeColor);
+
+        Line building16TopRightShade = new Line(
+                building16.getOrigin().x() + building16.getWidth() / 2.0 + 0,
+                maxY - building16.getHeight() - 88,
+                building16.getOrigin().x() + building16.getWidth() / 2.0 + 4.1,
+                maxY - building16.getHeight() - 70
+        );
+        building16TopRightShade.setStrokeWidth(1.75);
+        building16TopRightShade.setStroke(topColor);
+
+//        Line building16BottomRightShade = new Line(
+//                building16.getOrigin().x() + building16.getWidth() / 2.0 + 4,
+//                maxY - building16.getHeight() - 70,
+//                building16.getOrigin().x() + building16.getWidth() - 22,
+//                maxY - building16.getHeight() - 47
+//        );
+        Line building16BottomRightShade = new Line(
+                building16.getOrigin().x() + building16.getWidth() / 2.0 + 4,
+                maxY - building16.getHeight() - 70,
+                137,
+                560
+        );
+
+        System.out.println("X = " + (building16.getC3().x() - 1));
+        System.out.println("Y = " + (building16.getC3().y() - 1));
+        System.out.println("\nX = " + (building16.getC3().x() - 1));
+        System.out.println("Y = " + (building16.getC3().y() - 1));
+
+        building16BottomRightShade.setStrokeWidth(2);
+        building16BottomRightShade.setStroke(topColor);
+
+        building16Group.getChildren().addAll(
+                building16Spire, building16Triangle2,
+                building16Triangle3, building16Triangle1,
+                building16LeftShade, building16TopRightShade,
+                building16BottomRightShade
+        );
+
+
+        // Buildings Group
+        Group buildings = new Group(
+                building16Group, building1Group, building2Group,
+                building3Group, building4Group, building5Group,
+                building7Group, building6Group, building9Group,
+                building8Group, building10Group, building11Group,
+                building12Group, building15Group, building14Group,
+                building13Group
+        );
+
+        // Set root node and scene
         Group root = new Group(sun, buildings);
         Scene scene = new Scene(root, h, w, skyGradient);
-        primaryStage.setTitle("Ben Godwin - UseGUI3");
+
+        // Primary stage setup
+        primaryStage.setTitle("Ben Godwin - New York Sunset");
         primaryStage.setScene(scene);
         primaryStage.show();
-
     }
 
     public static void main(String[] args) {
