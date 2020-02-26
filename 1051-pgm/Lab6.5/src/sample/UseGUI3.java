@@ -505,10 +505,14 @@ public class UseGUI3 extends Application {
 
         // Building 15 - Flat
         Coordinate b15_origin = new Coordinate(925, maxY);
-        Building building15 = new Building(
+        Building building15 = new ThreeDimensionalBuilding(
                 b15_origin,
-                maxX - b15_origin.x(),
+                (maxX - b15_origin.x()) * 2,
                 building8Bottom.getHeight() + 180,
+                10,
+                6,
+                shadeColor,
+                shadeColor,
                 shadeColor
         );
         Group building15Group = building15.makeBuilding();
@@ -517,9 +521,9 @@ public class UseGUI3 extends Application {
                 building15.getC4().x(),
                 building15.getC4().y(),
                 building15.getC4().x(),
-                building15.getC4().y() + 108,
+                building15.getC4().y() + 112,
                 building15.getC4().x() + 4,
-                building15.getC4().y() + 102,
+                building15.getC4().y() + 106,
                 building15.getC4().x() + 4,
                 building15.getC4().y()
         );
@@ -529,9 +533,9 @@ public class UseGUI3 extends Application {
                 building15.getC4().x() + 4,
                 building15.getC4().y(),
                 building15.getC4().x() + 4,
-                building15.getC4().y() + 102,
+                building15.getC4().y() + 106,
                 building15.getC4().x() + 8,
-                building15.getC4().y() + 96,
+                building15.getC4().y() + 100,
                 building15.getC4().x() + 8,
                 building15.getC4().y()
         );
@@ -543,12 +547,12 @@ public class UseGUI3 extends Application {
 
         // Building 16 - Flat with two triangle top
         Coordinate b16_origin = new Coordinate(
-                building3.getOrigin().x() + 15,
+                building3.getOrigin().x() + 10,
                 maxY
         );
         Building building16 = new Building(
-                b16_origin, building3.getWidth() + 5,
-                building9.getHeight() + 5,
+                b16_origin, building3.getWidth() + 25,
+                building9.getHeight() - 25,
                 sunColor
         );
         Group building16Group = building16.makeBuilding();
@@ -591,7 +595,7 @@ public class UseGUI3 extends Application {
                 building16.getOrigin().x() + building16.getWidth() / 2.0,
                 maxY - building16.getHeight() - 89,
                 building16.getOrigin().x() + building16.getWidth() / 2.0,
-                maxY - building16.getHeight() - 50 - 60
+                maxY - building16.getHeight() - 118
         );
         building16Spire.setStrokeWidth(2);
         building16Spire.setStroke(spireGradient);
@@ -606,23 +610,17 @@ public class UseGUI3 extends Application {
         Line building16TopRightShade = new Line(
                 building16.getOrigin().x() + building16.getWidth() / 2.0 + 0,
                 maxY - building16.getHeight() - 88,
-                building16.getOrigin().x() + building16.getWidth() / 2.0 + 4.1,
+                building16.getOrigin().x() + building16.getWidth() / 2.0 + 5,
                 maxY - building16.getHeight() - 70
         );
-        building16TopRightShade.setStrokeWidth(1.75);
+        building16TopRightShade.setStrokeWidth(2);
         building16TopRightShade.setStroke(topColor);
 
-//        Line building16BottomRightShade = new Line(
-//                building16.getOrigin().x() + building16.getWidth() / 2.0 + 4,
-//                maxY - building16.getHeight() - 70,
-//                building16.getOrigin().x() + building16.getWidth() - 22,
-//                maxY - building16.getHeight() - 47
-//        );
         Line building16BottomRightShade = new Line(
-                building16.getOrigin().x() + building16.getWidth() / 2.0 + 4,
+                building16.getOrigin().x() + building16.getWidth() / 2.0 + 5,
                 maxY - building16.getHeight() - 70,
                 137,
-                560
+                572
         );
 
         System.out.println("X = " + (building16.getC3().x() - 1));
