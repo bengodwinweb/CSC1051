@@ -334,7 +334,7 @@ public class UseGUI3 extends Application {
 
         // Building 9 - 3D, right side white
         Coordinate b9_origin = new Coordinate(485, maxY);
-        Building building9 = new ThreeDimensionalBuilding(
+        ThreeDimensionalBuilding building9 = new ThreeDimensionalBuilding(
                 b9_origin,
                 115,
                 building8Bottom.getHeight() + 27,
@@ -346,9 +346,50 @@ public class UseGUI3 extends Application {
         );
         Group building9Group = building9.makeBuilding();
 
+        Line building9Shade1 = new Line(
+                building9.getC4().x(),
+                building9.getC4().y(),
+                building9.getC7().x(),
+                building9.getC7().y()
+        );
+        building9Shade1.setStrokeWidth(.3);
+        building9Shade1.setStroke(shadeColor);
+
+        Line building9Shade2 = new Line(
+                building9.getC7().x(),
+                building9.getC7().y(),
+                building9.getC3().x(),
+                building9.getC3().y()
+        );
+        building9Shade2.setStrokeWidth(.3);
+        building9Shade2.setStroke(shadeColor);
+
+        Line building9Shade3 = new Line(
+                building9.getC6().x(),
+                building9.getC6().y(),
+                building9.getC3().x(),
+                building9.getC3().y()
+        );
+        building9Shade3.setStrokeWidth(.3);
+        building9Shade3.setStroke(shadeColor);
+
+        Line building9Shade4 = new Line(
+                building9.getC3().x() - .7,
+                building9.getC3().y() + .7,
+                building9.getC3().x() - .7,
+                maxY - building6.getHeight() + 14
+        );
+        building9Shade4.setStrokeWidth(1);
+        building9Shade4.setStroke(shadeColor);
+
+        building9Group.getChildren().addAll(
+                building9Shade1, building9Shade2,
+                building9Shade3, building9Shade4
+        );
+
         // Building 10 - 3D
         Coordinate b10_origin = new Coordinate(566, maxY);
-        Building building10 = new ThreeDimensionalBuilding(
+        ThreeDimensionalBuilding building10 = new ThreeDimensionalBuilding(
                 b10_origin,
                 140,
                 building6.getHeight() + 15,
@@ -377,6 +418,8 @@ public class UseGUI3 extends Application {
         );
         building10Shade2.setStrokeWidth(2);
         building10Shade2.setStroke(topColor);
+
+
         building10Group.getChildren().addAll(building10Shade2, building10Shade1);
 
         // Building 11 - Flat
