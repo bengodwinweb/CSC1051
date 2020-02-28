@@ -5,6 +5,7 @@
 package sample;
 
 import javafx.application.Application;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.Group;
 import javafx.scene.paint.*;
@@ -138,7 +139,7 @@ public class UseGUI3 extends Application {
         );
         Building building3 = new Building(
                 b3_origin,
-                66,
+                80,
                 building2.getHeight() + 40,
                 shadeColor
         );
@@ -151,7 +152,7 @@ public class UseGUI3 extends Application {
         );
         Building building4 = new Building(
                 b4_origin,
-                67,
+                53,
                 building2.getHeight() - 45,
                 shadeColor
         );
@@ -596,7 +597,8 @@ public class UseGUI3 extends Application {
                 maxY
         );
         Building building16 = new Building(
-                b16_origin, building3.getWidth() + 25,
+                b16_origin,
+                91,
                 building9.getHeight() - 25,
                 sunColor
         );
@@ -794,8 +796,8 @@ public class UseGUI3 extends Application {
         );
         cloud4.setStrokeWidth(5);
         cloud4.setStroke(cloudGradient2);
-        cloud4.setStrokeMiterLimit(7.55905176);
         cloud4.setFill(cloudGradient2);
+        System.out.println(cloud4.getStrokeLineCap());
 
         Path cloud5 = new Path(
                 new MoveTo(maxX, 362),
@@ -835,6 +837,11 @@ public class UseGUI3 extends Application {
 
 
         Group cloudGroup = new Group(cloud6, cloud3, cloud2, cloud4, cloud1, cloud7, cloud5);
+
+        // Set stokeLineJoin to round on each cloud Path in cloudGroup
+        for (Node child : cloudGroup.getChildren()) {
+            ((Path) child).setStrokeLineJoin(StrokeLineJoin.ROUND);
+        }
 
         // Set root node and scene
         Group root = new Group(sun, arcGroup, cloudGroup, buildings);
