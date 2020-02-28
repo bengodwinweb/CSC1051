@@ -282,14 +282,14 @@ public class UseGUI3 extends Application {
         );
         Group building8TopGroup = building8Top.makeBuilding();
 
-        Line building8Pole = new Line(
+        Line building8Spire = new Line(
                 building8Top.getOrigin().x() + 20,
                 building8Top.getOrigin().y() - building8Top.getHeight(),
                 building8Top.getOrigin().x() + 20,
-                building8Top.getOrigin().y() - building8Top.getHeight() - 90
+                building8Top.getOrigin().y() - building8Top.getHeight() - 120
         );
-        building8Pole.setStrokeWidth(4);
-        building8Pole.setStroke(spireGradient);
+        building8Spire.setStrokeWidth(4);
+        building8Spire.setStroke(spireGradient);
 
         Line building8MiddleShade = new Line(
                 b8_middle_origin.x() + 80,
@@ -329,7 +329,7 @@ public class UseGUI3 extends Application {
 
         Group building8Group = new Group(
                 building8BottomGroup, building8MiddleGroup,
-                building8TopGroup, building8Pole,
+                building8TopGroup, building8Spire,
                 building8MiddleShade, building8TopShade,
                 building8RightShade, building8LeftShade
         );
@@ -602,9 +602,9 @@ public class UseGUI3 extends Application {
         );
         Group building16Group = building16.makeBuilding();
 
-        int triangle1Height = 76;
-        int triangle2Height = 83;
-        int triangle3Height = 95;
+        int triangle1Height = 85;
+        int triangle2Height = 94;
+        int triangle3Height = 108;
 
         Polygon building16Triangle1 = new Polygon(
                 building16.getC4().x(),
@@ -640,7 +640,7 @@ public class UseGUI3 extends Application {
                 building16.getOrigin().x() + building16.getWidth() / 2.0,
                 maxY - building16.getHeight() - 89,
                 building16.getOrigin().x() + building16.getWidth() / 2.0,
-                maxY - building16.getHeight() - 118
+                maxY - building16.getHeight() - 125
         );
         building16Spire.setStrokeWidth(2);
         building16Spire.setStroke(spireGradient);
@@ -652,32 +652,42 @@ public class UseGUI3 extends Application {
         building16LeftShade.setStrokeWidth(3);
         building16LeftShade.setStroke(shadeColor);
 
-        Line building16TopRightShade = new Line(
-                building16.getOrigin().x() + building16.getWidth() / 2.0 + 1,
-                maxY - building16.getHeight() - 88.8,
-                building16.getOrigin().x() + building16.getWidth() / 2.0 + 5,
-                maxY - building16.getHeight() - 71
-        );
-        building16TopRightShade.setStrokeWidth(2);
-        building16TopRightShade.setStroke(topColor);
+        Color building16ShadeLightColor = Color.rgb(225, 208, 198);
+        Color building16ShadeDarkColor = Color.rgb(158, 159, 144);
 
-        Line building16BottomRightShade = new Line(
-                building16.getOrigin().x() + building16.getWidth() / 2.0 + 5.5,
-                maxY - building16.getHeight() - 70,
-                138,
-                583
+        Stop[] building16ShadeStops = new Stop[] {
+                new Stop(0, building16ShadeLightColor),
+                new Stop(1, building16ShadeDarkColor)
+        };
+        LinearGradient building16ShadeGradient = new LinearGradient(
+                0,
+                0,
+                1,
+                0,
+                true,
+                CycleMethod.NO_CYCLE,
+                building16ShadeStops
         );
 
-        building16BottomRightShade.setStrokeWidth(2);
-        building16BottomRightShade.setStroke(topColor);
+        Path building16RightShade = new Path(
+                new MoveTo(
+                        building16.getOrigin().x() + building16.getWidth() / 2.0 + 1,
+                        maxY - building16.getHeight() - 103
+                ),
+                new LineTo(
+                        building16.getOrigin().x() + building16.getWidth() / 2.0 + 6,
+                        maxY - building16.getHeight() - 77.5
+                ),
+                new LineTo(142, 586)
+        );
+        building16RightShade.setStroke(building16ShadeGradient);
+        building16RightShade.setStrokeWidth(2);
 
         building16Group.getChildren().addAll(
                 building16Spire, building16Triangle2,
                 building16Triangle3, building16Triangle1,
-                building16LeftShade, building16TopRightShade,
-                building16BottomRightShade
+                building16LeftShade, building16RightShade
         );
-
 
 
         // Buildings Group
@@ -700,28 +710,17 @@ public class UseGUI3 extends Application {
 
         Group arcGroup = new Group(sunArc);
 
-//        Stop[] skyStops = new Stop[] {
-//                new Stop(0, sky1),
-//                new Stop(.2, sky2),
-//                new Stop(.4, sky3),
-//                new Stop(.6, sky4),
-//                new Stop(.8, sky5)};
-//        LinearGradient skyGradient = new LinearGradient(
-//                0,
-//                0,
-//                0,
-//                1,
-//                true,
-//                CycleMethod.NO_CYCLE,
-//                skyStops
-//        );
-
-//        Color cloudColor1 = Color.rgb(229, 236, 233);
         Color cloudColor1 = Color.rgb(237, 243, 240);
         Color cloudColor2 = Color.rgb(183, 192, 202);
 
         Stop[] cloudStops = new Stop[] {
                 new Stop(0, cloudColor1),
+                new Stop(1, cloudColor2)
+        };
+        Stop[] cloudStops2 = new Stop[] {
+                new Stop(0, cloudColor2),
+                new Stop(.62, cloudColor1),
+                new Stop(.85, cloudColor1),
                 new Stop(1, cloudColor2)
         };
         LinearGradient cloudGradient1 = new LinearGradient(
@@ -750,6 +749,12 @@ public class UseGUI3 extends Application {
                 true,
                 CycleMethod.NO_CYCLE,
                 cloudStops
+        );
+        LinearGradient cloudGradient4 = new LinearGradient(
+                0, 1, 0, 0,
+                true,
+                CycleMethod.NO_CYCLE,
+                cloudStops2
         );
 
         Path cloud1 = new Path(
@@ -794,17 +799,25 @@ public class UseGUI3 extends Application {
 
         Path cloud5 = new Path(
                 new MoveTo(maxX, 362),
-                new HLineTo(400),
-                new QuadCurveTo(390, 353, 410, 345),
-                new QuadCurveTo(650, 296, maxX, 310)
+                new QuadCurveTo(700, 365, 450, 358),
+                new QuadCurveTo(385, 355, 440, 338),
+                new QuadCurveTo(635, 275, maxX, 310)
         );
         cloud5.setStrokeWidth(5);
         cloud5.setStroke(cloudGradient3);
         cloud5.setFill(cloudGradient3);
 
-        Path cloud6 = new Path();
+        Path cloud6 = new Path(
+                new MoveTo(0, 425),
+                new CubicCurveTo(220, 448, 360, 390, 670, 425),
+                new CubicCurveTo(565, 478, 445, 430, 338, 465),
+                new CubicCurveTo(228, 515, 170, 497, 118, 495),
+                new QuadCurveTo(65, 488, 0, 528)
+        );
         cloud6.setStrokeWidth(5);
-        cloud6.setStroke(cloudGradient1);
+        cloud6.setStroke(cloudGradient4);
+        cloud6.setFill(cloudGradient4);
+        cloud6.setStrokeMiterLimit(2.5);
 
         Path cloud7 = new Path(
                 new MoveTo(72, 330),
