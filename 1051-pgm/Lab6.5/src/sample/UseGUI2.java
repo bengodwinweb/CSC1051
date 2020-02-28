@@ -39,12 +39,18 @@ public class UseGUI2 extends Application {
         Text line1 = new Text(0, 0, "The best time to plant a tree was 20 years ago."); // first line of text
         line1.setFill(Color.WHITE); // set first line to white text
         line1.setFont(Font.font("American Typewriter", 16)); // set first line font and font size
-        Text line2 = new Text(75, 40, "The second best time is now."); // second line of text
+        
+        Text line2 = new Text(83, 33, "The second best time is now."); // second line of text
         line2.setFill(Color.WHITE); // set second line to white text
         line2.setFont(Font.font("American Typewriter", 20)); // set second line to same font as first, slightly larger size
-        Group quote = new Group(line1, line2); // add lines of quote to a quote group
+        
+        Text line3 = new Text(235, 75, "- Chinese Proverb"); // third line of text
+        line3.setFill(Color.WHITE); // set third line to white text
+        line3.setFont(Font.font("American Typewriter", 14)); // set third line to smaller font
+        
+        Group quote = new Group(line1, line2, line3); // add lines of quote to a quote group
         quote.setTranslateX(72); // set starting x position of quote group
-        quote.setTranslateY(120); // set starting y position of quote group
+        quote.setTranslateY(100); // set starting y position of quote group
 
         // declare a green line of width 4
         Line line = new Line(62, 19, 450, 220);
@@ -56,7 +62,7 @@ public class UseGUI2 extends Application {
         rect.setFill(mist);
 
         // declare a dark blue-green circle 
-        Circle circle = new Circle(158, 224, 49);
+        Circle circle = new Circle(162, 210, 49);
         circle.setFill(reflection);
 
         // declare a an empty ellipse with a brown outline of width 5

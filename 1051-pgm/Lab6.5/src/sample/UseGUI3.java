@@ -54,21 +54,21 @@ public class UseGUI3 extends Application {
         Color sun3 = Color.rgb(249, 234, 39, .8);
         Color sun4 = Color.rgb(252, 208, 12, .8);
 
-        Coordinate sunCenter = new Coordinate(652, 545);
-        Coordinate sunSize = new Coordinate(170, 152);
+        Coordinate sunCenter = new Coordinate(662, 516);
+        Coordinate sunSize = new Coordinate(190, 175);
 
         Stop[] sunStops = new Stop[] {
                 new Stop(0, sun1),
-                new Stop(.25, sun2),
-                new Stop(.55, sun3),
+                new Stop(.4, sun2),
+                new Stop(.65, sun3),
 //                new Stop(.8, sun3),
-                new Stop(.97, sun4)
+                new Stop(1, sun4)
         };
         RadialGradient sunGradient = new RadialGradient(
                 0,
                 .1,
-                sunCenter.x(),
-                sunCenter.y() + 6,
+                sunCenter.x() - 13,
+                sunCenter.y() + 15,
                 sunSize.x(),
                 false,
                 CycleMethod.NO_CYCLE,
@@ -354,7 +354,7 @@ public class UseGUI3 extends Application {
                 building9.getC7().x(),
                 building9.getC7().y()
         );
-        building9Shade1.setStrokeWidth(.3);
+        building9Shade1.setStrokeWidth(1);
         building9Shade1.setStroke(shadeColor);
 
         Line building9Shade2 = new Line(
@@ -363,7 +363,7 @@ public class UseGUI3 extends Application {
                 building9.getC3().x(),
                 building9.getC3().y()
         );
-        building9Shade2.setStrokeWidth(.3);
+        building9Shade2.setStrokeWidth(.8);
         building9Shade2.setStroke(shadeColor);
 
         Line building9Shade3 = new Line(
@@ -372,7 +372,7 @@ public class UseGUI3 extends Application {
                 building9.getC3().x(),
                 building9.getC3().y()
         );
-        building9Shade3.setStrokeWidth(.3);
+        building9Shade3.setStrokeWidth(.4);
         building9Shade3.setStroke(shadeColor);
 
         Line building9Shade4 = new Line(
@@ -678,6 +678,8 @@ public class UseGUI3 extends Application {
                 building16BottomRightShade
         );
 
+
+
         // Buildings Group
         Group buildings = new Group(
                 building16Group, building1Group, building2Group,
@@ -688,18 +690,141 @@ public class UseGUI3 extends Application {
                 building13Group
         );
 
-        Path arc = new Path(
+        Path sunArc = new Path(
                 new MoveTo(300, maxY),
                 new CubicCurveTo(410, 297, 1040, 545, 910, maxY)
         );
-        arc.setStrokeWidth(2);
-        arc.setStroke(Color.rgb(249, 68, 15, .25));
-        arc.setFill(Color.rgb(249, 68, 15, .14));
+        sunArc.setStrokeWidth(2);
+        sunArc.setStroke(Color.rgb(249, 68, 15, .25));
+        sunArc.setFill(Color.rgb(249, 68, 15, .14));
 
-        Group arcGroup = new Group(arc);
+        Group arcGroup = new Group(sunArc);
+
+//        Stop[] skyStops = new Stop[] {
+//                new Stop(0, sky1),
+//                new Stop(.2, sky2),
+//                new Stop(.4, sky3),
+//                new Stop(.6, sky4),
+//                new Stop(.8, sky5)};
+//        LinearGradient skyGradient = new LinearGradient(
+//                0,
+//                0,
+//                0,
+//                1,
+//                true,
+//                CycleMethod.NO_CYCLE,
+//                skyStops
+//        );
+
+//        Color cloudColor1 = Color.rgb(229, 236, 233);
+        Color cloudColor1 = Color.rgb(237, 243, 240);
+        Color cloudColor2 = Color.rgb(183, 192, 202);
+
+        Stop[] cloudStops = new Stop[] {
+                new Stop(0, cloudColor1),
+                new Stop(1, cloudColor2)
+        };
+        LinearGradient cloudGradient1 = new LinearGradient(
+                0,
+                0,
+                0,
+                1,
+                true,
+                CycleMethod.NO_CYCLE,
+                cloudStops
+        );
+        LinearGradient cloudGradient2 = new LinearGradient(
+                1,
+                0,
+                0,
+                0,
+                true,
+                CycleMethod.NO_CYCLE,
+                cloudStops
+        );
+        LinearGradient cloudGradient3 = new LinearGradient(
+                0,
+                1,
+                0,
+                0,
+                true,
+                CycleMethod.NO_CYCLE,
+                cloudStops
+        );
+
+        Path cloud1 = new Path(
+                new MoveTo(0, 2.5),
+                new HLineTo(600),
+                new CubicCurveTo(518, 95, 425, 45, 370, 75),
+                new CubicCurveTo(300, 115, 150, 55, 0, 90)
+        );
+        cloud1.setStrokeWidth(5);
+        cloud1.setStroke(cloudGradient1);
+        cloud1.setFill(cloudGradient1);
+//        cloud1.setStrokeMiterLimit(2.0);
+
+        Path cloud2 = new Path(
+                new MoveTo(0, 188),
+                new CubicCurveTo(110, 183, 140, 163, 255, 178),
+                new CubicCurveTo(360, 178, 385, 118, 335, 80),
+                new HLineTo(0)
+        );
+        cloud2.setStrokeWidth(5);
+        cloud2.setStroke(cloudGradient1);
+        cloud2.setFill(cloudGradient1);
+
+        Path cloud3 = new Path(
+                new MoveTo(0, 160),
+                new CubicCurveTo(125, 140, 285, 220, 345, 255),
+                new CubicCurveTo(145, 280, 80, 250, 0, 250)
+        );
+        cloud3.setStrokeWidth(5);
+        cloud3.setStroke(cloudGradient2);
+        cloud3.setFill(cloudGradient2);
+
+        Path cloud4 = new Path(
+                new MoveTo(0, 290),
+                new CubicCurveTo(95, 285, 200, 330, 310, 347),
+                new QuadCurveTo(150, 365, 0, 353)
+        );
+        cloud4.setStrokeWidth(5);
+        cloud4.setStroke(cloudGradient2);
+        cloud4.setStrokeMiterLimit(7.55905176);
+        cloud4.setFill(cloudGradient2);
+
+        Path cloud5 = new Path(
+                new MoveTo(maxX, 362),
+                new HLineTo(400),
+                new QuadCurveTo(390, 353, 410, 345),
+                new QuadCurveTo(650, 296, maxX, 310)
+        );
+        cloud5.setStrokeWidth(5);
+        cloud5.setStroke(cloudGradient3);
+        cloud5.setFill(cloudGradient3);
+
+        Path cloud6 = new Path();
+        cloud6.setStrokeWidth(5);
+        cloud6.setStroke(cloudGradient1);
+
+        Path cloud7 = new Path(
+                new MoveTo(72, 330),
+                new CubicCurveTo(180, 310, 350, 195, 585, 230),
+                new QuadCurveTo(652, 245, 725, 245),
+                new QuadCurveTo(900, 225, 1200, 350),
+                new HLineTo(800),
+                new QuadCurveTo(715, 350, 515, 312),
+                new CubicCurveTo(427, 300, 360, 335, 310, 327),
+                new CubicCurveTo(207, 313, 140, 345, 72, 330)
+        );
+        cloud7.setStrokeWidth(5);
+        cloud7.setStroke(cloudGradient3);
+        cloud7.setFill(cloudGradient3);
+
+
+        Group cloudGroup = new Group(cloud6, cloud3, cloud2, cloud4, cloud1, cloud7, cloud5);
 
         // Set root node and scene
-        Group root = new Group(sun, arcGroup, buildings);
+        Group root = new Group(sun, arcGroup, cloudGroup, buildings);
         Scene scene = new Scene(root, h, w, skyGradient);
 
         // Primary stage setup
