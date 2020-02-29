@@ -1,4 +1,4 @@
-package sample;
+package UseGUI3;
 
 // Class that creates rectangular representations of a "building"
 // given an origin Coordinate, width, height, and color. Parent of ThreeDimensionalBuilding
