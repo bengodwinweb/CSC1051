@@ -13,16 +13,19 @@ public class Building {
         private Color color;
         // saves the corners as Coordinates so they can be referenced
         // by new buildings or when creating outlines
-        private Coordinate origin;
-        private Coordinate coord2;
-        private Coordinate coord3;
-        private Coordinate coord4;
+        private Coordinate origin; // bottom left corner
+        private Coordinate coord2; // bottom right corner
+        private Coordinate coord3; // top right corner
+        private Coordinate coord4; // top left corner
 
         public Building(Coordinate origin, double width, double height, Color color) {
             this(
-                    origin,
+                    origin, // set bottom left
+                    // keep y from origin, move x over width to get bottom right
                     new Coordinate(origin.x() + width, origin.y()),
+                    // keep x from bottom right, move y up height to get top right
                     new Coordinate(origin.x() + width, origin.y() - height),
+                    // keep y from top right, move x over -width to get top left
                     new Coordinate(origin.x(), origin.y() - height),
                     color,
                     width,
