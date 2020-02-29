@@ -1,5 +1,8 @@
 package sample;
 
+// Class that creates rectangular representations of a "building"
+// given an origin Coordinate, width, height, and color. Parent of ThreeDimensionalBuilding
+
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.Group;
@@ -8,6 +11,8 @@ public class Building {
         private final double width;
         private final double height;
         private Color color;
+        // saves the corners as Coordinates so they can be referenced
+        // by new buildings or when creating outlines
         private Coordinate origin;
         private Coordinate coord2;
         private Coordinate coord3;
@@ -43,17 +48,23 @@ public class Building {
             this.height = height;
         }
 
+        // Returns a group containing the "Building" shape
+        /* Has to return a group so it has the same return type
+            as overridden method in children classes that create
+            more than one shape */
         public Group makeBuilding() {
+            // Creates a polygon using the four points
             Polygon polygon = new Polygon(
                     origin.x(), origin.y(),
                     coord2.x(), coord2.y(),
                     coord3.x(), coord3.y(),
                     coord4.x(), coord4.y()
             );
-            polygon.setFill(color);
+            polygon.setFill(color); // set building fill color
             return new Group(polygon);
         }
 
+        // Getters for corner Coordinates
         protected Coordinate getOrigin() {
             return origin;
         }
