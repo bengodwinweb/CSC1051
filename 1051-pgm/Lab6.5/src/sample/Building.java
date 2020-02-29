@@ -5,15 +5,15 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.Group;
 
 public class Building {
-        private int width;
-        private int height;
+        private final double width;
+        private final double height;
         private Color color;
         private Coordinate origin;
         private Coordinate coord2;
         private Coordinate coord3;
         private Coordinate coord4;
 
-        public Building(Coordinate origin, int width, int height, Color color) {
+        public Building(Coordinate origin, double width, double height, Color color) {
             this(
                     origin,
                     new Coordinate(origin.x() + width, origin.y()),
@@ -31,8 +31,8 @@ public class Building {
                 Coordinate coord3,
                 Coordinate coord4,
                 Color color,
-                int width,
-                int height
+                double width,
+                double height
         ) {
             this.origin = origin;
             this.coord2 = coord2;
@@ -74,11 +74,11 @@ public class Building {
             return color;
         }
 
-        public int getWidth() {
+        public double getWidth() {
             return width;
         }
 
-        public int getHeight() {
+        public double getHeight() {
             return height;
         }
 }

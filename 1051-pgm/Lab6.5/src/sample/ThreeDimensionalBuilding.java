@@ -13,10 +13,10 @@ public class ThreeDimensionalBuilding extends Building {
 
     public ThreeDimensionalBuilding(
             Coordinate origin,
-            int width,
-            int height,
-            int midpointOffset,
-            int heightOffset,
+            double width,
+            double height,
+            double midpointOffset,
+            double heightOffset,
             Color leftColor,
             Color rightColor,
             Color topColor
