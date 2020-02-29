@@ -1,22 +1,58 @@
 package sample;
 
+// Extension of Building class - creates a building that appears 3D
+
+/*
+*           3D-BUILDING
+*
+*     width is still distance between origin and C2
+*     height is distance between C2 and C3 (or origin and C4)
+*
+*     verticalOffset:
+*           the vertical distance between the top of the building (y of C3 and C4),
+*           and the y of C6 and C7
+*           C7.y() = C3.y() + verticalOffset
+*           C6.y() = C3.y() - verticalOffset
+*
+*     midpointOffset:
+*           the horizontal distance between the true midpoint and the (origin.x() + (with / 2))
+*           and the x of C5/6 and C7
+*           C5.x() = C6.x() = origin.x() + (width / 2) + midpointOffset
+*           C7.x() = origin.x() + (width / 2) - midpointOffset
+*
+*                 C7
+*                  ^
+*               /      \
+*         C4  /           \      C3
+*            |  \  C6   /  |
+*            |      ∨      |
+*            |      |      |
+*            |      |      |
+*            |      |      |
+*            |      |      |
+*            |      |      |
+*            |      |      |
+*     Origin  ---------------  C2
+*                   C5
+* */
+
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.Group;
 
 public class ThreeDimensionalBuilding extends Building {
-    public Coordinate coord5;
-    public Coordinate coord6;
-    public Coordinate coord7;
-    public Color rightColor;
-    public Color topColor;
+    public Coordinate coord5; // bottom middle
+    public Coordinate coord6; // middle middle
+    public Coordinate coord7; // top middle
+    public Color rightColor; // color of building's right side
+    public Color topColor; // color of building's top side
 
     public ThreeDimensionalBuilding(
             Coordinate origin,
             double width,
             double height,
             double midpointOffset,
-            double heightOffset,
+            double verticalOffset,
             Color leftColor,
             Color rightColor,
             Color topColor
@@ -28,17 +64,19 @@ public class ThreeDimensionalBuilding extends Building {
         );
         coord6 = new Coordinate(
                 origin.x() + (width / 2) + midpointOffset,
-                origin.y() - height + heightOffset
+                origin.y() - height + verticalOffset
         );
         coord7 = new Coordinate(
                 origin.x() + (width / 2) - midpointOffset,
-                origin.y() - height - heightOffset
+                origin.y() - height - verticalOffset
         );
         this.rightColor = rightColor;
         this.topColor = topColor;
     }
 
     @Override
+    /* takes the coordinates and makes three polygons: left, right, and top,
+    *   then returns them in a group */
     public Group makeBuilding() {
         Polygon leftSide = new Polygon(
                 super.getOrigin().x(), super.getOrigin().y(),
